@@ -115,11 +115,7 @@ def make_plot(field_name, current_Year, geosource):
     p.add_tools(hover)
     return p
 
-
-
-# Index page
-@app.route('/')
-def index():
+def make_doc():
     # Input geojson source that contains features for plotting for:
     geosource = GeoJSONDataSource(geojson = json_data(2017)) 
     input_field = 'MMR'
@@ -141,10 +137,23 @@ def index():
     curdoc().add_root(layout)
        
     # Embed plot into HTML via Flask Render
-    script, div = components(layout)
-    return render_template("myindex.html", script=script, div=div)
+    #script, div = components(layout)
+    #return render_template("myindex.html", script=script, div=div)
 
-# With debug=True, Flask server will auto-reload 
-# when there are code changes
+@app.route('/', methods=['GET'])
+def bkapp_page():
+    script = server_document('http://itestbokeh1.herokuapp.com:5006/bkapp')
+    return render_template("myindex.html", script=script)
+
+def bk_worker():
+    server = Server({'/bkapp': make_doc}, io_loop=IOLoop(), allow_websocket_origin=["itestbokeh1.herokuapp.com:{}".format(port)])
+    server.start()
+    server.io_loop.start()
+
+from threading import Thread
+Thread(target=bk_worker).start()
+
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    print('Opening single process Flask app with embedded Bokeh application on http://itestbokeh1.herokuapp.com:{}/'.format(port))
+    webbrowser.open_new("http://itestbokeh1.herokuapp.com:{}/".format(port))
+    app.run(port=port, debug=True) 
