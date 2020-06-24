@@ -151,7 +151,7 @@ def bk_worker():
     server.start()
     server.io_loop.start()
 
-from threading import Thread
+from threaded import Thread
 Thread(target=bk_worker).start()
 
 if __name__ == '__main__':
