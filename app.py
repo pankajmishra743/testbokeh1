@@ -17,7 +17,7 @@ from bokeh.embed import components, server_document, server_session
 from bokeh.client import pull_session
 
 sns.set_style('dark')
-fp = r'map\Indian_States.shp'
+fp = 'map/Indian_States.shp'
 statedata = pd.read_csv('All State.csv')
 map_df = gpd.read_file(fp)
 
