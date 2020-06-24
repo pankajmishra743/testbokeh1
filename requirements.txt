@@ -21,4 +21,4 @@ seaborn==0.10.1
 geopandas==0.7.0
 matplotlib==3.2.1
 bokeh == 2.0.2
-threading
+threaded == 4.0.8
